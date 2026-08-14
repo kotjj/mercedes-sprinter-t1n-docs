@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Подключение LAUNCH X431 к Sprinter T1N (круглый 14-пин)</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
+  h1 { font-size: 20px; }
+  h2 { font-size: 15px; margin-top: 24px; }
+  table { border-collapse: collapse; margin: 8px 0; }
+  td, th { border: 1px solid #999; padding: 5px 9px; font-size: 13px; }
+  th { background: #eee; }
+  .eng { background: #ffe9a8; font-weight: bold; }
+  .gnd { background: #d6ecd6; }
+  .pwr { background: #f6d6d6; }
+  .note { background: #fff7e0; border: 1px solid #e0c060; padding: 8px 12px; margin: 10px 0; font-size: 13px; }
+  .warn { background: #fdeaea; border: 1px solid #d08080; padding: 8px 12px; margin: 10px 0; font-size: 13px; }
+  code { background: #f0f0f0; padding: 1px 5px; }
+</style>
+</head>
+<body>
+<h1>LAUNCH X431 → Mercedes Sprinter T1N (круглый 14-пин разъём)</h1>
+
+<div class="warn">
+<b>ВАЖНО.</b> Номера пинов выбиты на торце 14-пин разъёма (белые цифры на пластике). В интернете встречаются
+«зеркальные» картинки, где пины показаны наоборот — сверяйся с цифрами на самом разъёме, а не с рисунком.
+Перед первым подключением прозвони мультиметром: <code>пин 14 → пин 7 (K-line двигателя)</code> и <code>пин 1 → масса</code>.
+</div>
+
+<h2>Разъёмы</h2>
+<table>
+  <tr><th>Круглый 14-пин (машина)</th><th></th><th>OBD2 16-пин (LAUNCH)</th></tr>
+  <tr><td>1 — GND (масса, KL.31)</td><td>→</td><td>4 и 5 — GND</td></tr>
+  <tr><td>2 — +15 (зажигание)</td><td>→</td><td>8 — +15 (опционально)</td></tr>
+  <tr><td>3 — +30 (АКБ, постоянный)</td><td>→</td><td>16 — +12V</td></tr>
+  <tr><td>4 — K-line иммобилайзер (EWS)</td><td>→</td><td>1 — K-line SKREEM</td></tr>
+  <tr><td>5 — RPM (обороты)</td><td>→</td><td>3 — RPM</td></tr>
+  <tr class="eng"><td>14 — K-line ДВИГАТЕЛЬ (EDC/CDI)</td><td>→</td><td>7 — K-line ДВИГАТЕЛЬ</td></tr>
+  <tr><td>13 — K-line ABS</td><td>→</td><td>9 — K-line ABS</td></tr>
+  <tr><td>9 — K-line коробка (AT)</td><td>→</td><td>11 — K-line TCM</td></tr>
+  <tr><td>8 — K-line подушки (AB)</td><td>→</td><td>13 — K-line AB</td></tr>
+  <tr><td>12 — K-line приборка (IC)</td><td>→</td><td>15 — K-line IC/климат</td></tr>
+</table>
+
+<h2>Минимальная схема — только ДВИГАТЕЛЬ (для запуска/диагностики CDI)</h2>
+<table>
+  <tr class="eng"><td>14-пин №14 (K-line двигателя)</td><td>→</td><td>OBD2 №7 (K-line)</td></tr>
+  <tr class="pwr"><td>14-пин №3 (+30 АКБ)</td><td>→</td><td>OBD2 №16 (+12V)</td></tr>
+  <tr class="gnd"><td>14-пин №1 (GND)</td><td>→</td><td>OBD2 №4 и №5 (масса)</td></tr>
+</table>
+
+<div class="note">
+Трёх проводов хватает, чтобы LAUNCH читал ЭБУ двигателя (коды EDC, live data: rail pressure, обороты,
+иммобилайзер). Остальные провода (ABS, подушки, панель, коробка) нужны только для чтения других блоков.
+</div>
+
+<h2>Как найти K-line двигателя, если номера стёрлись</h2>
+<ol>
+  <li>Включи зажигание (KL.15).</li>
+  <li>Ищи пин с напряжением <b>~11–12 В</b> относительно массы (K-line подтянута к питанию через резистор).</li>
+  <li>Проверь: при прокрутке стартером на этом пине «гуляют» импульсы данных (логический пробник / осциллограф).</li>
+  <li>Это и есть K-line двигателя (по схеме — пин 14).</li>
+</ol>
+
+<h2>Готовый адаптер</h2>
+<p>Проще купить готовый кабель: <b>LAUNCH BENZ-14</b> (входит в набор «Non-16 pin Adaptor Box» для X431)
+или <b>Autel Benz-CV14</b>. Обычные дешёвые «14-pin → OBD2» часто имеют всего 4 провода — они читают только
+двигатель, этого для нашей диагностики достаточно.</p>
+</body>
+</html>
